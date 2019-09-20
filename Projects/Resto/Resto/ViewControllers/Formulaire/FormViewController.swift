@@ -45,6 +45,12 @@ class FormViewController: UIViewController {
         let style = Restaurant.FoodStyle.allCases[selectedSegmentIndex]
         
         let newResto = Restaurant(name: name, style: style, address: address, glutenFree: nil)
+        
+        RestaurantLibrary.shared.add(newResto)
+        
+        dismiss(animated: true) {
+            print("J'ai dismiss")
+        }
     }
     
     @IBAction func visitedSwitchChanged(_ sender: UISwitch) {

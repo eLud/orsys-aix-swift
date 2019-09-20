@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct Restaurant: Equatable, CustomStringConvertible {
+struct Restaurant: Equatable, CustomStringConvertible, Codable {
     
     var description: String {
         return "Restaurant " + name
     }
     //raw value
-    enum FoodStyle: String, CustomStringConvertible, CaseIterable {
+    enum FoodStyle: String, CustomStringConvertible, CaseIterable, Codable {
         case asian
         case french
         case italian
@@ -42,4 +42,27 @@ struct Restaurant: Equatable, CustomStringConvertible {
         numberOfVisits = 0
         //        lastVisit = nil
     }
+}
+
+class RestaurantLibrary: Codable {
+    
+    static let shared = RestaurantLibrary()
+    
+    //Possibilité de définir uniquement le setter privé
+    private(set) var restaurants: [Restaurant] = []
+    
+    func add(_ restaurant: Restaurant) {
+        restaurants.append(restaurant)
+        print("Les restaurant propose du glutenFree \(restaurant.offersGlutenFreeMeals)")
+        
+        save()
+    }
+    
+    func save() {
+        
+        let jsonEncoder = JSONEncoder()
+        let data = try? jsonEncoder.encode(self)
+        print(String(data: data!, encoding: .utf8)!)
+    }
+    
 }
